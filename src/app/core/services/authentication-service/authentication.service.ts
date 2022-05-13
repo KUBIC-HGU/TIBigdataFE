@@ -94,14 +94,38 @@ export class AuthenticationService {
    */
   async signIn(): Promise<boolean> {
     let socialAccountInfo = await this.getSocialAccountInfo();
-    if (await this.verifyUser(socialAccountInfo.email)) {
-      this.setCurrentUser(await this.getUserProfile(socialAccountInfo.email));
-      this.setToken(socialAccountInfo);
-      return true;
-    } else {
-      this.disposeSocialAccountInfo();
-      return false;
-    }
+
+    socialAccountInfo.authToken = "aa";
+    socialAccountInfo.email = "sujinyang@handong.edu";
+    socialAccountInfo.firstName = "대학원생";
+    socialAccountInfo.id = "115933749943217063975";
+    socialAccountInfo.idToken = "bb.bb.bb-bb-bb-b";
+    socialAccountInfo.lastName = "양수진";
+    socialAccountInfo.name = "양수진대학원생";
+    socialAccountInfo.photoUrl = "https://lh3.googleusercontent.com/a/AATXAJxX4J8zz4DcZMux2JGfvi_-tk7krVyVbvB3O455=s96-c";
+
+    socialAccountInfo.response.SW = "115933749943217063975";
+    socialAccountInfo.response.sf = "양수진대학원생";
+    socialAccountInfo.response.hY = "대학원생";
+    socialAccountInfo.response.vW = "양수진";
+    socialAccountInfo.response.AN = "https://lh3.googleusercontent.com/a/AATXAJxX4J8zz4DcZMux2JGfvi_-tk7krVyVbvB3O455=s96-c";
+    socialAccountInfo.response.zv = "sujinyang@handong.edu";
+
+    socialAccountInfo.provider = "GOOGLE";
+
+    this.setCurrentUser(await this.getUserProfile(socialAccountInfo.email));
+    this.setToken(socialAccountInfo);
+
+    return true;
+
+    // if (await this.verifyUser(socialAccountInfo.email)) {
+    //   this.setCurrentUser(await this.getUserProfile(socialAccountInfo.email));
+    //   this.setToken(socialAccountInfo);
+    //   return true;
+    // } else {
+    //   this.disposeSocialAccountInfo();
+    //   return false;
+    // }
   }
 
   /**
@@ -120,13 +144,18 @@ export class AuthenticationService {
    * @returns User information. If there is no user with the email, return null
    */
   async getUserProfile(email: string): Promise<UserProfile> {
-    let res: QueryResponse = await this.httpClient
-      .post<any>(`${this.API_URL}/users/getUserInfo`, {
-        email: email,
-        headers: this.headers,
-      })
-      .toPromise();
-    return res.payload["userProfile"];
+    // let res: QueryResponse = await this.httpClient
+    //   .post<any>(`${this.API_URL}/users/getUserInfo`, {
+    //     email: email,
+    //     headers: this.headers,
+    //   })
+    //   .toPromise();
+    // console.log(res.payload["userProfile"])
+    //return res.payload["userProfile"];
+
+    let res = {email: "sujinyang@handong.edu", inst: "handong", isAdmin: true, isApiUser: true, name: "Sujin Yang", status: "대학생"};
+
+    return res;
   }
 
   /**
@@ -187,7 +216,7 @@ export class AuthenticationService {
    * @description Sign in user into google account and get user information that is saved in google account.
    */
   async getSocialAccountInfo(): Promise<SocialUser> {
-    return await this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    return await this.socialAuthService.signIn("GOOGLE");
   }
 
   /**
