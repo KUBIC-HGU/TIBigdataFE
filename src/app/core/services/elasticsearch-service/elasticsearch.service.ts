@@ -20,6 +20,13 @@ export class ElasticsearchService {
   private articleSource: BehaviorSubject<ArticleSource[]> = new BehaviorSubject<ArticleSource[]>(undefined);
   private articleNum: BehaviorSubject<number> = new BehaviorSubject<any>(0);
   private keyword: string = "";
+  private startTime: string = "0001-01-01";
+  private endTime: string = "9000-12-31";
+  private mustKeyword: string = "";
+  private mustNotKeyword: string = "";
+  private firstChar = "";
+  private topicHashKeys : string[] = [];
+  private doctype: string = null;
   private selectedInst: string;
   private hashKeys: string[] = [];
   private sortOption: SortOption = SortOption.SCORE;
@@ -29,15 +36,6 @@ export class ElasticsearchService {
     false
   );
   private currentSearchingPage: number = 1;
-
-  //new
-  private startTime: string = "0001-01-01";
-  private endTime: string = "9000-12-31";
-  private mustKeyword: string = "";
-  private mustNotKeyword: string = "";
-  private firstChar = "";
-  private topicHashKeys : string[] = [];
-  private doctype: string = null;
 
 
   constructor(
@@ -56,8 +54,8 @@ export class ElasticsearchService {
   searchKeyword(keyword: string): void {
     this.searchMode = SearchMode.FILTER;
     this.setKeyword(keyword);
-    this.triggerSearch(1);
   }
+
 
   /**
    * @description Get current search mode.
@@ -72,7 +70,6 @@ export class ElasticsearchService {
    * @param searchMode
    */
   setSearchMode(searchMode: SearchMode): void {
-    console.log("SearchMode : ",searchMode);
     this.searchMode = searchMode;
   }
 
@@ -202,7 +199,6 @@ export class ElasticsearchService {
    * @param docSize Number of articles to search at one time.
    */
   searchByText(startIndex?: number, docSize?: number): Promise<any> {
-    console.log("trigger 1")
     if (!startIndex) startIndex = 0;
     if (!docSize) docSize = this.numDocsPerPage;
 
@@ -428,7 +424,8 @@ export class ElasticsearchService {
   }
 
   triggerSearchFilter(selectedPageNum: number): void {
-    console.log("--------es---------")
+    //for debugging
+    console.log("--------es options---------")
     console.log(this.startTime)
     console.log(this.endTime)
     console.log(this.selectedInst)
@@ -436,7 +433,7 @@ export class ElasticsearchService {
     console.log(this.mustKeyword)
     console.log(this.mustNotKeyword)
     console.log(this.keyword)
-    console.log("--------es---------")
+    console.log("--------es options---------")
 
     let startIndex = selectedPageNum - 1;
     let docSize = this.numDocsPerPage;
@@ -930,6 +927,4 @@ export class ElasticsearchService {
   setTopicHashKeys(hashKeys: string[]): void {
     this.topicHashKeys = hashKeys;
   }
-
 }
-

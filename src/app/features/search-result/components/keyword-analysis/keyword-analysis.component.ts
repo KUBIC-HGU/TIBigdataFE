@@ -108,7 +108,6 @@ export class KeywordAnalysisComponent implements OnInit, OnDestroy {
         tmpYear = year;
       }
     }
-    console.log(yearData)
     return yearData;
   }
 

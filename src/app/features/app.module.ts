@@ -56,7 +56,7 @@ export function createTranslateLoader(http: HttpClient) {
     OpenApiModule,
   ],
   exports: [],
-  providers: [AuthGuard, AuthenticationService, TokenInterceptorService, ArticleLibraryComponent, SearchBarComponent],
+  providers: [ArticleLibraryComponent, SearchBarComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

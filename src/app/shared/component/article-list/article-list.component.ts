@@ -102,6 +102,7 @@ export class ArticleListComponent implements OnInit, OnDestroy {
    * @param pageNum Number of articles to display in one page.
    */
   beginSearch(pageNum: number): void {
+    console.log("beginSearch");
     this.currentPage = pageNum;
     if (this.currentPage === null) this.currentPage = 1;
     if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;

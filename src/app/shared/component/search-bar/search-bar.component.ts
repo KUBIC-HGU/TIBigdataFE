@@ -6,7 +6,6 @@ import { AnalysisDatabaseService } from "src/app/core/services/analysis-database
 import { ArticleService } from "src/app/core/services/article-service/article.service";
 import { ElasticsearchService } from "src/app/core/services/elasticsearch-service/elasticsearch.service";
 import { TranslateService } from '@ngx-translate/core';
-// import { SearchResultFilterComponent } from '../../../features/search-result/components/search-result-filter/search-result-filter.component';
 
 @Component({
   selector: "app-search-bar",
@@ -90,11 +89,9 @@ export class SearchBarComponent implements OnInit {
     this.selectedDate = "기간";
     this.selectedInst = "기관";
     this.selectedTopic = "주제별";
-    this.isDateSelected = false;
-    this.isInstSelected = false;
-    this.isTopicSelected = false;
     this.isKeyLoaded = false;
     this.checkRouterIsMain();
+    this.resetFilters();
     this.loadInstitutions();
   }
 
@@ -206,6 +203,10 @@ export class SearchBarComponent implements OnInit {
    * @description Reset filter selection by reloading component.
    */
   resetFilters(): void {
+    this.isDateSelected = false;
+    this.isInstSelected = false;
+    this.isTopicSelected = false;
+
     this._startDate = "0001-01-01";
     this._endDate = "9000-12-31";
     this.elasticsearchService.setSelectedDate(this._startDate, this._endDate);
@@ -215,15 +216,12 @@ export class SearchBarComponent implements OnInit {
 
     this.selectedTopic = "false";
     this.elasticsearchService.setTopicHashKeys([]);
-
-    this.ngOnInit();
   }
 
   /**
    * @description set search configuration and navigate to search result page.
    */
   async search(): Promise<void> {
-
     if(this.isDateSelected == true)
       this.elasticsearchService.setSelectedDate(this._startDate, this._endDate);
     if(this.isInstSelected == true)
@@ -241,6 +239,7 @@ export class SearchBarComponent implements OnInit {
     this.elasticsearchService.setSearchMode(SearchMode.FILTER);
     this.elasticsearchService.setSearchStatus(false);
     this.elasticsearchService.searchKeyword(this.searchKeyword);
+    this.elasticsearchService.triggerSearch(1);
     this.elasticsearchService.setCurrentSearchingPage(1);
     this._router.navigateByUrl("/search/result");
   }
@@ -283,6 +282,8 @@ export class SearchBarComponent implements OnInit {
    */
   relatedSearch(keyword: string) {
     this.elasticsearchService.searchKeyword(keyword);
+    this.elasticsearchService.triggerSearch(1);
+    this.elasticsearchService.setCurrentSearchingPage(1);
   }
 
   /**

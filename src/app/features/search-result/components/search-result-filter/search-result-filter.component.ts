@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ElasticsearchService } from "src/app/core/services/elasticsearch-service/elasticsearch.service";
 import {SearchMode} from '../../../../core/enums/search-mode';
-import {ArticleService} from '../../../../core/services/article-service/article.service';
+import {ArticleService} from "src/app/core/services/article-service/article.service";
 import {AnalysisDatabaseService} from '../../../../core/services/analysis-database-service/analysis.database.service';
 import {Router} from '@angular/router';
 
@@ -56,7 +56,6 @@ export class SearchResultFilterComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.setSearchKeyword();
       });
-    this.resetFilters();
   }
 
   ngOnInit() {
@@ -350,14 +349,7 @@ export class SearchResultFilterComponent implements OnInit, OnDestroy {
     this.elasticsearchService.setSelectedKeyword(this._mustKeyword,this._mustNotKeyword);
     this.elasticsearchService.setTopicHashKeys(ids);
     this.elasticsearchService.setDoctype(doctype);
-
-    // console.log("mustKeyword : ", this.elasticsearchService.getMustKeyword);
-    // console.log("mustNotKeyword : ", this.elasticsearchService.getMustNotKeyword);
-    // console.log("startTime : ", this.elasticsearchService.getStartTime);
-    // console.log("endTime : ", this.elasticsearchService.getEndTime);
-    // console.log("selectedInst : ", this.elasticsearchService.getSelectedInst);
-    // console.log("selectedTp : ",this.selectedTp);
-
+    //start search
     this.elasticsearchService.setSearchMode(SearchMode.FILTER);
     this.elasticsearchService.triggerSearch(1);
     this.elasticsearchService.searchBySearchFilterComplete(1);

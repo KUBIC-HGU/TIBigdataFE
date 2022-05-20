@@ -62,14 +62,6 @@ export class NavbarComponent implements OnInit {
         this.selectedSubMenu = event.url.split("/")[2];
       }
     });
-    // this.resizeObservable$ = fromEvent(window, 'resize')
-    // this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
-    //   if(matchMedia("(max-width: 768px)").matches) {
-    //     console.log('hihi');
-    //   }
-    //   console.log('event: ', evt);
-    // });
-    // this.checkRouterIsMain();
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
@@ -101,7 +93,6 @@ export class NavbarComponent implements OnInit {
   }
 
   disableObject(flag: boolean): Object {
-    // console.log("main : ",flag);
     if(flag){
       return {
         "display" : "block"
@@ -258,7 +249,6 @@ export class NavbarComponent implements OnInit {
   // }
 
   getSelectedMenu(): string {
-    console.log(this.selectedMenu)
     return this.selectedMenu;
   }
 
